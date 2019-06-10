@@ -144,7 +144,7 @@ class IntlUniversal {
    * As same as get(...) API
    */
   formatMessage({ id, defaultMessage }, variables) {
-    return this.get(id, variables).defaultMessage(defaultMessage)
+    return this.get(id, variables) || defaultMessage
   }
 
   /**
