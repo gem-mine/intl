@@ -100,25 +100,34 @@ class IntlUniversal {
   /**
    * Get the formatted message by key
    */
-  get(key, variables) {
+  get(key, defaultValue, variables) {
     const { data, currentLocale, formats } = this.options
+
+    if (defaultValue === undefined) {
+      defaultValue = key
+    }
+
+    if (!variables && typeof defaultValue === 'object') {
+      variables = defaultValue
+      defaultValue = key
+    }
 
     let msg = getDescendantProp(data, key)
     if (msg == null) {
       warn(`"${key}" not defined in ${currentLocale}`)
-      return undefined
+      return defaultValue
     }
     if (variables) {
       variables = xss(Object.assign({}, variables))
     }
 
     try {
-      msg = new IntlMessageFormat(msg, currentLocale, formats) // TODO memorize
+      msg = new IntlMessageFormat(msg, currentLocale, formats)
       msg = msg.format(variables)
       return msg
     } catch (err) {
       warn(`format message failed for key='${key}'`, err)
-      return undefined
+      return defaultValue
     }
   }
 

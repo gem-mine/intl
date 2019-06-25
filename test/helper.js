@@ -22,6 +22,14 @@ function baseTest() {
   const { data } = intl.options
   expect(intl.get('home')).toBe(data.home)
   expect(intl.get('SIMPLE')).toBe(data.SIMPLE)
+
+  expect(intl.get('NOT_EXIST')).toBe('NOT_EXIST')
+  expect(intl.get('NOT_EXIST', 'defaultValue')).toBe('defaultValue')
+  expect(intl.get('home', 'defaultValue')).toBe(data.home)
+  expect(intl.get('HELLO', { name: 'jerry', where: 'China' })).toBe(format('HELLO', { name: 'jerry', where: 'China' }))
+  expect(intl.get('NOT_EXIST', { age: 22 })).toBe('NOT_EXIST')
+  expect(intl.get('NOT_EXIST', 'defaultValue', { age: 22 })).toBe('defaultValue')
+
   expectKD('HELLO', { name: 'tom', where: 'China' })
   expectKD('SALE_PRICE', { price: 123456.78 })
   expectKD('SALE_START', { start: new Date() })
