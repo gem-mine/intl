@@ -1,4 +1,4 @@
-/* global expect, beforeAll, jest */
+/* global expect, beforeAll */
 const intl = require('../lib')
 const locales = {
   en: require('./data/en.json'),

@@ -100,58 +100,69 @@ class IntlUniversal {
   /**
    * Get the formatted message by key
    */
-  get(key, variables) {
+  get(key, defaultValue, variables) {
     const { data, currentLocale, formats } = this.options
+
+    if (!variables && typeof defaultValue === 'object') {
+      variables = defaultValue
+      defaultValue = key
+    }
+    if (defaultValue === undefined) {
+      defaultValue = key
+    }
 
     let msg = getDescendantProp(data, key)
     if (msg == null) {
       warn(`"${key}" not defined in ${currentLocale}`)
-      return undefined
+      return defaultValue
     }
     if (variables) {
       variables = xss(Object.assign({}, variables))
     }
 
     try {
-      msg = new IntlMessageFormat(msg, currentLocale, formats) // TODO memorize
+      msg = new IntlMessageFormat(msg, currentLocale, formats)
       msg = msg.format(variables)
       return msg
     } catch (err) {
       warn(`format message failed for key='${key}'`, err)
-      return undefined
+      return defaultValue
     }
   }
 
   /**
    * Get the formatted html message by key.
    */
-  getHTML(key, variables) {
-    let msg = this.get(key, variables)
-    if (msg) {
-      const el = React.createElement('span', {
-        dangerouslySetInnerHTML: {
-          __html: msg
-        }
-      })
-      // when key exists, it should still return element if there's defaultMessage() after getHTML()
-      const defaultMessage = () => el
-      return Object.assign({ defaultMessage: defaultMessage, d: defaultMessage }, el)
+  getHTML(key, defaultValue, variables) {
+    if (!variables && typeof defaultValue === 'object') {
+      variables = defaultValue
+      defaultValue = key
     }
-    return ''
+    if (defaultValue === undefined) {
+      defaultValue = key
+    }
+
+    const msg = this.get(key, defaultValue, variables)
+    const el = React.createElement('span', {
+      dangerouslySetInnerHTML: {
+        __html: msg
+      }
+    })
+    return el
   }
 
   /**
    * As same as get(...) API
    */
   formatMessage({ id, defaultMessage }, variables) {
-    return this.get(id, variables).defaultMessage(defaultMessage)
+    return this.get(id, defaultMessage, variables)
   }
 
   /**
    * As same as getHTML(...) API
    */
   formatHTMLMessage({ id, defaultMessage }, variables) {
-    return this.getHTML(id, variables).defaultMessage(defaultMessage)
+    return this.getHTML(id, defaultMessage, variables)
   }
 
   /**
