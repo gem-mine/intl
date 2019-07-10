@@ -90,8 +90,19 @@ class IntlUniversal {
    */
   setLocale(lang) {
     const { localeParamName } = this.options
+    let exist = false
+    if (location.search && location.search.indexOf(`${localeParamName}=`) > -1) {
+      exist = true
+    }
     if (location.search) {
-      location.search = location.search.replace(new RegExp(`${localeParamName}=?([^&]*)`), `${localeParamName}=${lang}`)
+      if (exist) {
+        location.search = location.search.replace(
+          new RegExp(`${localeParamName}=?([^&]*)`),
+          `${localeParamName}=${lang}`
+        )
+      } else {
+        location.search = location.search + `&${localeParamName}=${lang}`
+      }
     } else {
       location.search = `?${localeParamName}=${lang}`
     }
