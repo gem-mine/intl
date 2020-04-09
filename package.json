@@ -30,7 +30,7 @@
   "dependencies": {
     "escape-html": "^1.0.3",
     "intl": "^1.2.5",
-    "intl-messageformat": "^2.2.0",
+    "intl-messageformat": "^7.3.2",
     "load-script": "^1.0.0",
     "query-string": "^5.1.1"
   },
