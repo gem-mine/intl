@@ -66,7 +66,7 @@ class IntlUniversal {
         this._error += 1
         const error = this._error
         if (error === 1) {
-          this.options.locale = DEFAULT_LOCALE
+          this.options.locale = this.options.defaultLocale
           return this.init(this.options)
         } else {
           return this._init()
