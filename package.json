@@ -1,6 +1,6 @@
 {
   "name": "@gem-mine/intl",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "国际化",
   "main": "lib/index.js",
   "engines": {
